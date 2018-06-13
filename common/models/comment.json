@@ -1,32 +1,35 @@
 {
-  "name": "Customer",
-  "base": "User",
+  "name": "Comment",
+  "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
+  "mixins": {
+    "TimeStamp": true
+  },
   "properties": {
-    "firstName": {
-      "type": "string"
+    "rating": {
+      "type": "number",
+      "required": true,
+      "default": 5
     },
-    "lastName": {
-      "type": "string"
-    },
-    "image": {
-      "type": "string"
+    "comment": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
   "relations": {
-    "comments": {
-      "type": "hasMany",
-      "model": "Comment",
-      "foreignKey": "customerId"
-    },
-    "favourites": {
-      "type": "hasMany",
-      "model": "favourite",
+    "dishes": {
+      "type": "belongsTo",
+      "model": "dishes",
       "foreignKey": ""
+    },
+    "customer": {
+      "type": "belongsTo",
+      "model": "Customer",
+      "foreignKey": "customerId"
     }
   },
   "acls": [
@@ -45,9 +48,15 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
-      "principalId": "$everyone",
+      "principalId": "$unauthenticated",
       "permission": "ALLOW",
       "property": "create"
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}
